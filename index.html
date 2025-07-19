@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subasta Futurista</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #e58fe1;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Título con efecto LED colorido animado en rosa/neón */
+.moly {
+  font-size: 5rem;
+  color: #e447dc;
+  text-shadow:
+    0 0 5px rgba(0,0,0,0.8),
+    0 0 10px rgba(0,0,0,0.6),
+    0 0 15px rgba(0,0,0,0.5),
+    0 0 20px rgba(0,0,0,0.4),
+    0 0 25px rgba(0,0,0,0.3);
+}
+
+    /* Valor mínimo con efecto LED cian/azul */
+    .valor-minimo {
+      font-size: 2.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0ff;
+      text-shadow:
+        0 0 5px #00ffffcc,
+        0 0 10px #00ccffcc,
+        0 0 20px #0099ffcc,
+        0 0 40px #0066ffcc,
+        0 0 80px #0033ffcc;
+      animation: ledGlowBlue 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes ledGlowBlue {
+      0% {
+        text-shadow:
+          0 0 5px #00ffffcc,
+          0 0 10px #00ccffcc,
+          0 0 20px #0099ffcc,
+          0 0 40px #0066ffcc,
+          0 0 80px #0033ffcc;
+        color: #00ffff;
+      }
+      100% {
+        text-shadow:
+          0 0 10px #00ccffcc,
+          0 0 15px #0099ffcc,
+          0 0 30px #0066ffcc,
+          0 0 50px #0033ffcc,
+          0 0 100px #0011ffcc;
+        color: #33eeff;
+      }
+    }
+
+    /* Otros estilos del body y componentes */
+
+    .carousel {
+      width: 360px;
+      height: 440px;
+      margin: auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00f0ff88;
+    }
+
+    .carousel-item {
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0;
+    }
+
+    .pujar-btn {
+      background: linear-gradient(45deg, #00f0ff, #8a2be2);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      box-shadow: 0 0 10px #00f0ff88;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .pujar-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f0ff;
+    }
+
+    .offer-btn {
+      background-color: #111;
+      color: cyan;
+      border: 2px solid cyan;
+      border-radius: 15px;
+      padding: 10px;
+      margin: 5px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .offer-btn:hover {
+      background-color: cyan;
+      color: #111;
+    }
+
+    .offer-btn.selected {
+      background-color: cyan;
+      color: #111;
+      box-shadow: 0 0 10px #00f0ffcc;
+    }
+
+    .modal-content {
+      background-color: #1f1f2e;
+      border: 2px solid #00f0ff;
+      border-radius: 20px;
+      color: white;
+    }
+
+    .form-control {
+      background-color: #222;
+      color: white;
+      border: 1px solid #00f0ff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container text-center mt-5">
+  <h1 class="mb-4 moly">MOLLY</h1>
+
+  <!-- Carrusel automático -->
+  <div id="carouselProductos" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel" data-bs-interval="3000">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="asset/img/IMG_5510.jpeg" alt="Camisa Rocket" />
+      </div>
+      <div class="carousel-item">
+        <img src="asset/img/IMG_5511.jpeg" alt="Chaqueta Cyberpunk" />
+      </div>
+      <div class="carousel-item">
+        <img src="asset/img/IMG_5512 (1).jpeg" alt="Smart Device Neon" />
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProductos" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselProductos" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <h3 class="valor-minimo">mínimo: $5.000</h3>
+
+  <button class="pujar-btn" data-bs-toggle="modal" data-bs-target="#modalPuja">Pujar</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalPuja" tabindex="-1" aria-labelledby="modalPujaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-4">
+      <h4 class="mb-3">Selecciona tu oferta</h4>
+      <div id="botonesOferta">
+        <div class="d-flex flex-wrap justify-content-center">
+          <!-- Botones generados por JS -->
+        </div>
+      </div>
+      <form id="formPuja" class="mt-4 d-none">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" id="nombre" class="form-control" required />
+        </div>
+        <button type="submit" class="pujar-btn w-100">Enviar Oferta</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const ofertas = [3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+  const botonesContainer = document.querySelector('#botonesOferta .d-flex');
+  const formPuja = document.getElementById('formPuja');
+  let ofertaSeleccionada = 0;
+
+  const numeroDestino = '+56950912388';
+
+  ofertas.forEach(valor => {
+    const btn = document.createElement('button');
+    btn.classList.add('offer-btn');
+    btn.innerText = `$${valor}`;
+    btn.type = 'button';
+
+    btn.addEventListener('click', () => {
+      ofertaSeleccionada = valor;
+
+      // Quitar clase 'selected' de todos los botones
+      const todosBtns = botonesContainer.querySelectorAll('.offer-btn');
+      todosBtns.forEach(b => b.classList.remove('selected'));
+
+      // Poner clase 'selected' en el botón clickeado
+      btn.classList.add('selected');
+
+      // Mostrar el formulario
+      formPuja.classList.remove('d-none');
+    });
+
+    botonesContainer.appendChild(btn);
+  });
+
+  formPuja.addEventListener('submit', e => {
+    e.preventDefault();
+    const nombre = document.getElementById('nombre').value;
+    const carousel = document.getElementById('carouselProductos');
+    const activeItem = carousel.querySelector('.carousel-item.active img');
+    const producto = activeItem ? activeItem.alt : "Producto desconocido";
+
+    const mensaje = `Hola, soy ${nombre}. Quiero pujar $${ofertaSeleccionada} por el producto: ${producto}.`;
+    const link = `https://api.whatsapp.com/send?phone=${numeroDestino}&text=${encodeURIComponent(mensaje)}`;
+    window.open(link, '_blank');
+
+    // Cerrar modal usando API de Bootstrap 5
+    const modalElement = document.getElementById('modalPuja');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+    }
+  });
+</script>
+</body>
+</html>
